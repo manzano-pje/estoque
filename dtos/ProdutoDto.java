@@ -1,22 +1,19 @@
-package com.api.estoque.entidades;
+package com.api.estoque.dtos;
 
-import jakarta.persistence.*;
+import com.api.estoque.entidades.Produto;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Produto {
+public class ProdutoDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idProdutos;
     @NotBlank
     @Column(unique = true)
@@ -33,10 +30,13 @@ public class Produto {
     @NotBlank
     private double valorCusto;
 
-    /******************
-     * RELACIONAMENTOS
-     ******************/
-    
-    @OneToMany(mappedBy = "produto")
-    public List<Movimentacao> listaMovimentacao;
+    public ProdutoDto(Produto produto) {
+        this.idProdutos = produto.getIdProdutos();
+        this.codProduto = produto.getCodProduto();
+        this.produto = produto.getProduto();
+        this.qtdMinima = produto.getQtdMinima();
+        this.estoque = produto.getEstoque();
+        this.dataCadastro = produto.getDataCadastro();
+        this.valorCusto = produto.getValorCusto();
+    }
 }
