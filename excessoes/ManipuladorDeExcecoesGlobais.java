@@ -12,4 +12,9 @@ public class ManipuladorDeExcecoesGlobais {
     public ResponseEntity<Object> handleExcessaoProdutoJaCadastrado(ExcessaoProdutoJaCadastrado ex){
         return new ResponseEntity<>(ex.paraJson(), HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler({ExcessaoNaoExistemProdutosCadastrados.class})
+    public ResponseEntity<Object> handleExcessaoNaoExistemProdutosCadastrados(ExcessaoNaoExistemProdutosCadastrados ex){
+        return new ResponseEntity<>(ex.paraJson(), HttpStatus.NOT_FOUND);
+    }
 }

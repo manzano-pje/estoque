@@ -8,10 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Data
@@ -25,6 +24,11 @@ public class ControleProduto {
     public ResponseEntity<Object> criarProduto(@RequestBody @Valid ProdutoDto produtoDto){
         servicoProduto.criarProduto(produtoDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Produto criado com sucesso!");
+    }
+
+    @GetMapping
+    public List<ProdutoDto> listarTodosProdutos(){
+        return servicoProduto.listarTodosProdutos();
     }
 
 }
