@@ -18,19 +18,13 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idProdutos;
-    @NotBlank
     @Column(unique = true)
     private String codProduto;
-    @NotBlank
     @Column(unique = true)
     private String produto;
-    @NotBlank
     private int qtdMinima;
-    @NotBlank
     private int estoque;
-    @NotBlank
     private Date dataCadastro;
-    @NotBlank
     private double valorCusto;
 
     /******************

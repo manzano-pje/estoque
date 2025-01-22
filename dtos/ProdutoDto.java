@@ -1,11 +1,13 @@
 package com.api.estoque.dtos;
 
 import com.api.estoque.entidades.Produto;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Date;
 
@@ -15,19 +17,20 @@ import java.util.Date;
 public class ProdutoDto {
 
     private int idProdutos;
-    @NotBlank
+    @NonNull
     @Column(unique = true)
     private String codProduto;
-    @NotBlank
+    @NonNull
     @Column(unique = true)
     private String produto;
-    @NotBlank
+    @NonNull
     private int qtdMinima;
-    @NotBlank
+    @NonNull
     private int estoque;
-    @NotBlank
+    @NonNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date dataCadastro;
-    @NotBlank
+    @NonNull
     private double valorCusto;
 
     public ProdutoDto(Produto produto) {

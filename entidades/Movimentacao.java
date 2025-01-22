@@ -35,9 +35,9 @@ public class Movimentacao {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario")
-    private int usuario;
+    private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_produto")
-    private int produto;
+    private Produto produto;
 }
