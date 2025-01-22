@@ -1,6 +1,7 @@
 package com.api.estoque.servicos;
 
 import com.api.estoque.configuracoes.FormatarTexto;
+import com.api.estoque.dtos.AlteracaoProdutoDto;
 import com.api.estoque.dtos.ProdutoDto;
 import com.api.estoque.entidades.Produto;
 import com.api.estoque.excessoes.ExcessaoNaoExistemProdutosCadastrados;
@@ -62,6 +63,30 @@ public class ServicoProduto {
         }
         Produto produto = produtoOptional.get();
         return  mapper.map(produto, ProdutoDto.class);
+    }
+
+    public void alterarProdutoPorCodProduto(String codProduto, AlteracaoProdutoDto produtoDto){
+        Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codProduto.toUpperCase());
+        if(produtoOptional.isEmpty()){
+            throw new ExcessaoNaoExistemProdutosCadastrados();
+        }
+        Produto produto = new Produto();
+        produto.setIdProdutos(produtoOptional.get().getIdProdutos());
+        produto.setCodProduto(produtoOptional.get().getCodProduto().toUpperCase());
+        produto.setProduto(FormatarTexto.formatarString(produtoDto.getProduto()));
+        produto.setQtdMinima(produtoDto.getQtdMinima());
+        produto.setEstoque(produtoDto.getEstoque());
+        produto.setDataCadastro(produtoOptional.get().getDataCadastro());
+        produto.setValorCusto(produtoDto.getValorCusto());
+        repositorioProduto.save(produto);
+    }
+
+    public void excluirProdutoPorCod(String codProduto){
+        Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codProduto.toUpperCase());
+        if(produtoOptional.isEmpty()){
+            throw new ExcessaoNaoExistemProdutosCadastrados();
+        }
+        repositorioProduto.deleteById(produtoOptional.get().getIdProdutos());
     }
 
 

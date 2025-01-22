@@ -1,5 +1,6 @@
 package com.api.estoque.controles;
 
+import com.api.estoque.dtos.AlteracaoProdutoDto;
 import com.api.estoque.dtos.ProdutoDto;
 import com.api.estoque.servicos.ServicoProduto;
 import jakarta.validation.Valid;
@@ -39,6 +40,19 @@ public class ControleProduto {
     @GetMapping("/pesquisaNome/{nomeProduto}")
     public ProdutoDto listaUmProdutoPorNome(@PathVariable String nomeProduto) {
         return servicoProduto.listaUmProdutoPorNome(nomeProduto);
+    }
+
+    @PatchMapping("{codProduto}")
+    public ResponseEntity<Object> alterarProdutoPorCodProduto(@RequestBody @Valid AlteracaoProdutoDto produtoDto,
+                                                              @PathVariable String codProduto){
+        servicoProduto.alterarProdutoPorCodProduto(codProduto, produtoDto);
+        return ResponseEntity.status(HttpStatus.OK).body("Produto alterado com sucesso!");
+    }
+
+    @DeleteMapping("{codProduto}")
+    public ResponseEntity<Object> excluirProdutoPorCod(@PathVariable String codProduto){
+        servicoProduto.excluirProdutoPorCod(codProduto);
+        return ResponseEntity.status(HttpStatus.OK).body("Produto excluído com sucesso!");
     }
 
 }

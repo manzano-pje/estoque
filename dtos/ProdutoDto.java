@@ -3,7 +3,6 @@ package com.api.estoque.dtos;
 import com.api.estoque.entidades.Produto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
