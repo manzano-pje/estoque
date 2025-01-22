@@ -46,8 +46,17 @@ public class ServicoProduto {
                 .collect(Collectors.toList());
     }
 
-    public ProdutoDto listaUmProdutoPorNome(String codProduto){
+    public ProdutoDto listaUmProdutoPorCodigo(String codProduto){
         Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codProduto.toUpperCase());
+        if(produtoOptional.isEmpty()){
+            throw new ExcessaoNaoExistemProdutosCadastrados();
+        }
+        Produto produto = produtoOptional.get();
+        return  mapper.map(produto, ProdutoDto.class);
+    }
+
+    public ProdutoDto listaUmProdutoPorNome(String nomeProduto){
+        Optional<Produto> produtoOptional = repositorioProduto.findByProduto(nomeProduto.toUpperCase());
         if(produtoOptional.isEmpty()){
             throw new ExcessaoNaoExistemProdutosCadastrados();
         }

@@ -32,7 +32,13 @@ public class ControleProduto {
     }
 
     @GetMapping("pesquisaCod/{codProduto}")
-    public ProdutoDto listaUmProdutoPorNome(@PathVariable String codProduto){
-        return servicoProduto.listaUmProdutoPorNome(codProduto);
+    public ProdutoDto listaUmProdutoPorCodigo(@PathVariable String codProduto){
+        return servicoProduto.listaUmProdutoPorCodigo(codProduto);
     }
+
+    @GetMapping("/pesquisaNome/{nomeProduto}")
+    public ProdutoDto listaUmProdutoPorNome(@PathVariable String nomeProduto) {
+        return servicoProduto.listaUmProdutoPorNome(nomeProduto);
+    }
+
 }

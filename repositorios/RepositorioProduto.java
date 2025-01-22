@@ -15,4 +15,5 @@ public interface RepositorioProduto extends JpaRepository<Produto, Integer> {
     Optional<Produto> findByCodProdutoOrProduto(@Param("codProduto") String codProduto, @Param("produto") String produto);
 
     Optional<Produto> findByCodProduto(String codProduto);
+    Optional<Produto> findByProduto(String produto);
 }
