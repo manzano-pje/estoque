@@ -31,4 +31,8 @@ public class ControleProduto {
         return servicoProduto.listarTodosProdutos();
     }
 
+    @GetMapping("pesquisaCod/{codProduto}")
+    public ProdutoDto listaUmProdutoPorNome(@PathVariable String codProduto){
+        return servicoProduto.listaUmProdutoPorNome(codProduto);
+    }
 }

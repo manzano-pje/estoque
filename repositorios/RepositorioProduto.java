@@ -13,4 +13,6 @@ public interface RepositorioProduto extends JpaRepository<Produto, Integer> {
 
     @Query("SELECT p FROM Produto p WHERE p.codProduto = :codProduto OR p.produto = :produto")
     Optional<Produto> findByCodProdutoOrProduto(@Param("codProduto") String codProduto, @Param("produto") String produto);
+
+    Optional<Produto> findByCodProduto(String codProduto);
 }
