@@ -71,7 +71,7 @@ public class ServicoProduto {
             throw new ExcessaoNaoExistemProdutosCadastrados();
         }
         Produto produto = new Produto();
-        produto.setIdProdutos(produtoOptional.get().getIdProdutos());
+        produto.setIdProduto(produtoOptional.get().getIdProduto());
         produto.setCodProduto(produtoOptional.get().getCodProduto().toUpperCase());
         produto.setProduto(FormatarTexto.formatarString(produtoDto.getProduto()));
         produto.setQtdMinima(produtoDto.getQtdMinima());
@@ -86,7 +86,7 @@ public class ServicoProduto {
         if(produtoOptional.isEmpty()){
             throw new ExcessaoNaoExistemProdutosCadastrados();
         }
-        repositorioProduto.deleteById(produtoOptional.get().getIdProdutos());
+        repositorioProduto.deleteById(produtoOptional.get().getIdProduto());
     }
 
 

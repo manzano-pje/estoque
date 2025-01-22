@@ -15,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class ProdutoDto {
 
-    private int idProdutos;
+    private int idProduto;
     @NonNull
     @Column(unique = true)
     private String codProduto;
@@ -33,7 +33,7 @@ public class ProdutoDto {
     private double valorCusto;
 
     public ProdutoDto(Produto produto) {
-        this.idProdutos = produto.getIdProdutos();
+        this.idProduto = produto.getIdProduto();
         this.codProduto = produto.getCodProduto();
         this.produto = produto.getProduto();
         this.qtdMinima = produto.getQtdMinima();
