@@ -15,8 +15,8 @@ public class ErroDeResposta extends RuntimeException{
 
     public Map<String, Object> paraJson(){
         Map<String, Object> json = new HashMap<>();
-        json.put("Código: ", this.codigo);
-        json.put("Erro: ", this.mensagem);
+        json.put("code: ", this.codigo);
+        json.put("message: ", this.mensagem);
         return json;
     }
 }
