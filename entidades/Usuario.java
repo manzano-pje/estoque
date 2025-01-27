@@ -18,7 +18,7 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUsuario;
-    @NonNull
+//    @NonNull
     @Column(unique = true)
     private String usuario;
     @NonNull
