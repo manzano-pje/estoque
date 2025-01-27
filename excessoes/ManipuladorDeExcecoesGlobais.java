@@ -34,6 +34,12 @@ public class ManipuladorDeExcecoesGlobais {
         return new ResponseEntity<>(ex.paraJson(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({ExcessaoNaoExisteUsuarios.class})
+    public ResponseEntity<Object> handleExcessaoNaoExisteUsuarios(ExcessaoNaoExisteUsuarios ex){
+        return new ResponseEntity<>(ex.paraJson(), HttpStatus.NOT_FOUND);
+    }
+
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
