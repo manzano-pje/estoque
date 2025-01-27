@@ -2,6 +2,7 @@ package com.api.estoque.servicos;
 
 import com.api.estoque.dtos.UsuarioDto;
 import com.api.estoque.entidades.Usuario;
+import com.api.estoque.excessoes.ExcessaoNaoExisteUsuarios;
 import com.api.estoque.excessoes.ExcessaoUsuarioJaCadastrado;
 import com.api.estoque.excessoes.ExcessaoUsuarioNaoCadastrado;
 import com.api.estoque.excessoes.ExcessaoUsuarioOuSenhaInvalidos;
@@ -11,7 +12,9 @@ import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Data
@@ -49,5 +52,15 @@ public class ServicoUsuario {
         usuario.setUsuario(usuarioOptional.get().getUsuario());
         usuario.setSenha(senha);
         repositorioUsuario.save(usuario);
+    }
+
+    public List<String> listarTodosUsuarios(){
+        List<Usuario> listaUsuario = repositorioUsuario.findAll();
+        if(listaUsuario.isEmpty()){
+            throw new ExcessaoNaoExisteUsuarios();
+        }
+        return listaUsuario.stream()
+                .map(Usuario::getUsuario)
+                .collect(Collectors.toList());
     }
 }

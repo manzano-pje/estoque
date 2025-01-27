@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @RestController
@@ -28,5 +30,10 @@ public class ControleUsuario {
     public ResponseEntity<Object> alterarSenha(@Valid @PathVariable String usuario, @RequestBody String senha){
         servicoUsuario.alterarSenha(usuario, senha);
         return ResponseEntity.status(HttpStatus.OK).body("Senha alterada com sucesso!");
+    }
+
+    @GetMapping
+    public List<String> listarTodosUsuarios(){
+        return servicoUsuario.listarTodosUsuarios();
     }
 }
