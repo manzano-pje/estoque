@@ -36,4 +36,10 @@ public class ControleUsuario {
     public List<String> listarTodosUsuarios(){
         return servicoUsuario.listarTodosUsuarios();
     }
+
+    @DeleteMapping("/{usuario}")
+    public ResponseEntity<Object> apagarUsuario(@PathVariable String usuario){
+        servicoUsuario.apagaqrUsuario(usuario);
+        return ResponseEntity.status(HttpStatus.OK).body("Usuário excluído com sucesso!");
+    }
 }

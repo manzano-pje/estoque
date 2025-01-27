@@ -10,7 +10,11 @@ import com.api.estoque.repositorios.RepositorioUsuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,5 +66,16 @@ public class ServicoUsuario {
         return listaUsuario.stream()
                 .map(Usuario::getUsuario)
                 .collect(Collectors.toList());
+    }
+
+    public void apagaqrUsuario(String usuario){
+        Optional<Usuario> usuarioOptional = repositorioUsuario.findByUsuario(usuario);
+        if(usuarioOptional.isEmpty()){
+            throw new ExcessaoUsuarioNaoCadastrado();
+        }
+        if(usuario.isBlank()){
+            throw new ExcessaoUsuarioOuSenhaInvalidos();
+        }
+        repositorioUsuario.deleteById(usuarioOptional.get().getIdUsuario());
     }
 }
