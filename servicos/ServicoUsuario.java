@@ -3,6 +3,7 @@ package com.api.estoque.servicos;
 import com.api.estoque.dtos.UsuarioDto;
 import com.api.estoque.entidades.Usuario;
 import com.api.estoque.excessoes.ExcessaoUsuarioJaCadastrado;
+import com.api.estoque.excessoes.ExcessaoUsuarioNaoCadastrado;
 import com.api.estoque.excessoes.ExcessaoUsuarioOuSenhaInvalidos;
 import com.api.estoque.repositorios.RepositorioUsuario;
 import lombok.AllArgsConstructor;
@@ -33,5 +34,20 @@ public class ServicoUsuario {
         usuario.setSenha(usuarioDto.getSenha());
         repositorioUsuario.save(usuario);
         return mapper.map(usuario, UsuarioDto.class);
+    }
+
+    public void alterarSenha(String usuarioPesquisa, String senha){
+        Optional<Usuario> usuarioOptional = repositorioUsuario.findByUsuario(usuarioPesquisa);
+        if(usuarioOptional.isEmpty()){
+            throw new ExcessaoUsuarioNaoCadastrado();
+        }
+        if(usuarioPesquisa.isBlank() || senha.length() < 8 || senha.length() > 15 ){
+            throw new ExcessaoUsuarioOuSenhaInvalidos();
+        }
+        Usuario usuario = usuarioOptional.get();
+        usuario.setIdUsuario(usuario.getIdUsuario());
+        usuario.setUsuario(usuarioOptional.get().getUsuario());
+        usuario.setSenha(senha);
+        repositorioUsuario.save(usuario);
     }
 }

@@ -8,10 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Data
 @AllArgsConstructor
@@ -25,5 +22,11 @@ public class ControleUsuario {
     public ResponseEntity<Object> criarUsuario(@Valid @RequestBody UsuarioDto usuarioDto){
         servicoUsuario.criarUsuario(usuarioDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso!");
+    }
+
+    @PatchMapping("/{usuario}")
+    public ResponseEntity<Object> alterarSenha(@Valid @PathVariable String usuario, @RequestBody String senha){
+        servicoUsuario.alterarSenha(usuario, senha);
+        return ResponseEntity.status(HttpStatus.OK).body("Senha alterada com sucesso!");
     }
 }

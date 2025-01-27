@@ -29,6 +29,10 @@ public class ManipuladorDeExcecoesGlobais {
         return new ResponseEntity<>(ex.paraJson(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    @ExceptionHandler({ExcessaoUsuarioNaoCadastrado.class})
+    public ResponseEntity<Object> handleExcessaoUsuarioNaoCadastrado(ExcessaoUsuarioNaoCadastrado ex){
+        return new ResponseEntity<>(ex.paraJson(), HttpStatus.NOT_FOUND);
+    }
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

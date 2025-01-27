@@ -16,7 +16,6 @@ public class UsuarioDto {
 
 
     @NotBlank(message = "O campo usuário não pode ser vazio.")
-    @Column(unique = true)
     private String usuario;
 
     @NotBlank(message = "Senha não pode ser vazia")
