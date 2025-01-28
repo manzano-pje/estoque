@@ -39,6 +39,15 @@ public class ManipuladorDeExcecoesGlobais {
         return new ResponseEntity<>(ex.paraJson(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({ExcessaoProdutoNaoCadastrado.class})
+    public ResponseEntity<Object> handleExcessaoProdutoNaoCadastrado(ExcessaoProdutoNaoCadastrado ex){
+        return new ResponseEntity<>(ex.paraJson(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({ExcessaoQuantidadeInsuficiente.class})
+    public ResponseEntity<Object> handleExcessaoQuantidadeInsuficiente(ExcessaoQuantidadeInsuficiente ex){
+        return new ResponseEntity<>(ex.paraJson(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
