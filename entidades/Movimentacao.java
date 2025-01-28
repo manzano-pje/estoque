@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Date;
 
@@ -21,10 +22,12 @@ public class Movimentacao {
     private int idMovimentacao;
     @Enumerated(EnumType.STRING)
     private TipoMovimentacao TipoMovimentacao;
-    @NotBlank
+    @NonNull
     private Date dataMovimentacao;
-    @NotBlank
+    @NonNull
     private double valor;
+    @NonNull
+    private int quantidade;
 
     // produto
     // usuario
