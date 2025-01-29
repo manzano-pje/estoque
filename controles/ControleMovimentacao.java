@@ -22,8 +22,8 @@ public class ControleMovimentacao {
     private final ServicoMovimentacao servicoMovimentacao;
 
     @PostMapping
-    public ResponseEntity<Object> criarVenda(@Valid @RequestBody MovimentacaoDto movimentacaoDto){
-        Object resposta = servicoMovimentacao.criarVenda(movimentacaoDto);
+    public ResponseEntity<Object> criarMovimentacao(@Valid @RequestBody MovimentacaoDto movimentacaoDto){
+        Object resposta = servicoMovimentacao.criarMovimentacao(movimentacaoDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
 }
