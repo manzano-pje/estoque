@@ -25,8 +25,6 @@ public class Movimentacao {
     @NonNull
     private Date dataMovimentacao;
     @NonNull
-    private double valor;
-    @NonNull
     private int quantidade;
 
     // produto

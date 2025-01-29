@@ -30,7 +30,7 @@ public class ServicoMovimentacao {
     private final RepositorioUsuario repositorioUsuario;
     private final ModelMapper mapper;
 
-    public ResponseEntity<Object> criarVenda(MovimentacaoDto movimentacaoDto){
+    public ResponseEntity<Object> criarMovimentacao(MovimentacaoDto movimentacaoDto){
         Optional<Usuario> usuarioOptional = repositorioUsuario.findByUsuario(movimentacaoDto.getUsuario());
         if(usuarioOptional.isEmpty()){
             throw  new ExcessaoNaoExisteUsuarios();
@@ -50,7 +50,6 @@ public class ServicoMovimentacao {
         movimentacao.setTipoMovimentacao(movimentacaoDto.getTipoMovimentacao());
         movimentacao.setDataMovimentacao(new Date());
         movimentacao.setQuantidade(movimentacaoDto.getQuantidade());
-        movimentacao.setValor(movimentacao.getQuantidade()*produtoOptional.get().getValorCusto());
         movimentacao.setProduto(produto);
         movimentacao.setUsuario(usuario);
         repositorioMovimentacao.save(movimentacao);
@@ -61,7 +60,7 @@ public class ServicoMovimentacao {
 
         if(estoqueAtual < produto.getQtdMinima()){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body("Movimentação efetuada com sucesso. \nEstoque abaixo do mínimo. \nProvidenciar compra.");
+                    .body("Movimentação efetuada com sucesso.  -  Estoque abaixo do mínimo.");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body("Movimentação efetuada com sucesso.");
     }
