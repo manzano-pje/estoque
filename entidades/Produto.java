@@ -27,10 +27,15 @@ public class Produto {
     private Date dataCadastro;
     private double valorCusto;
 
+
+    public Produto(Produto produto) {
+    }
+
     /******************
      * RELACIONAMENTOS
      ******************/
     
     @OneToMany(mappedBy = "produto")
     public List<Movimentacao> listaMovimentacao;
+
 }
