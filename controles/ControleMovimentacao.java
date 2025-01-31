@@ -2,7 +2,6 @@ package com.api.estoque.controles;
 
 import com.api.estoque.dtos.MovimentacaoDto;
 import com.api.estoque.servicos.ServicoMovimentacao;
-import jakarta.annotation.security.DenyAll;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;

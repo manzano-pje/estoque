@@ -4,6 +4,7 @@ import com.api.estoque.dtos.MovimentacaoDto;
 import com.api.estoque.entidades.Movimentacao;
 import com.api.estoque.entidades.Produto;
 import com.api.estoque.entidades.Usuario;
+import com.api.estoque.entidades.enums.TipoMovimentacao;
 import com.api.estoque.excessoes.ExcessaoNaoExisteUsuarios;
 import com.api.estoque.excessoes.ExcessaoProdutoNaoCadastrado;
 import com.api.estoque.excessoes.ExcessaoQuantidadeInsuficiente;
@@ -39,29 +40,34 @@ public class ServicoMovimentacao {
         if(produtoOptional.isEmpty()){
             throw new ExcessaoProdutoNaoCadastrado();
         }
-        if(movimentacaoDto.getQuantidade() > produtoOptional.get().getEstoque()){
-            throw new ExcessaoQuantidadeInsuficiente();
-        }
 
-        Usuario usuario = mapper.map(usuarioOptional.get(), Usuario.class);
-        Produto produto= mapper.map(produtoOptional.get(), Produto.class);
+        Usuario usuario = usuarioOptional.get();
+        Produto produto = produtoOptional.get();
 
         Movimentacao movimentacao = new Movimentacao();
         movimentacao.setTipoMovimentacao(movimentacaoDto.getTipoMovimentacao());
         movimentacao.setDataMovimentacao(new Date());
-        movimentacao.setQuantidade(movimentacaoDto.getQuantidade());
         movimentacao.setProduto(produto);
         movimentacao.setUsuario(usuario);
-        repositorioMovimentacao.save(movimentacao);
+        movimentacao.setQuantidade(movimentacaoDto.getQuantidade());
 
-        int estoqueAtual = produto.getEstoque() - movimentacaoDto.getQuantidade();
-        produto.setEstoque(estoqueAtual);
+        int estoqueAtual = produto.getEstoque();
+        if(movimentacaoDto.getTipoMovimentacao() == TipoMovimentacao.VENDA){
+            if(movimentacaoDto.getQuantidade() > produtoOptional.get().getEstoque()){
+                throw new ExcessaoQuantidadeInsuficiente();
+            }
+            estoqueAtual = estoqueAtual - movimentacaoDto.getQuantidade();
+            produto.setEstoque(estoqueAtual);
+        }else{
+            produto.setEstoque(estoqueAtual + movimentacaoDto.getQuantidade());
+        }
         repositorioProduto.save(produto);
+        repositorioMovimentacao.save(movimentacao);
 
         if(estoqueAtual < produto.getQtdMinima()){
             return ResponseEntity.status(HttpStatus.OK)
                     .body("Movimentação efetuada com sucesso.  -  Estoque abaixo do mínimo.");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body("Movimentação efetuada com sucesso.");
+        return ResponseEntity.status(HttpStatus.OK).body("Movimentação efetuada com sucesso.");
     }
 }
