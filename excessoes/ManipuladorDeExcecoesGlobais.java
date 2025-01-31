@@ -49,6 +49,13 @@ public class ManipuladorDeExcecoesGlobais {
         return new ResponseEntity<>(ex.paraJson(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    @ExceptionHandler({ExcessaoNaoExisteMovimentacaoNestaData.class})
+    public ResponseEntity<Object> handleExcessaoNaoExisteMovimentacaoNestaData(ExcessaoNaoExisteMovimentacaoNestaData ex){
+        return new ResponseEntity<>(ex.paraJson(), HttpStatus.NOT_FOUND);
+    }
+
+
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {

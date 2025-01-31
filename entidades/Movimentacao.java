@@ -3,13 +3,12 @@ package com.api.estoque.entidades;
 
 import com.api.estoque.entidades.enums.TipoMovimentacao;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -23,7 +22,7 @@ public class Movimentacao {
     @Enumerated(EnumType.STRING)
     private TipoMovimentacao TipoMovimentacao;
     @NonNull
-    private Date dataMovimentacao;
+    private LocalDate dataMovimentacao;
     @NonNull
     private int quantidade;
 
