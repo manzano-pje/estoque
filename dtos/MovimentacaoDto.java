@@ -1,12 +1,13 @@
 package com.api.estoque.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import com.api.estoque.entidades.enums.TipoMovimentacao;
 
 import java.util.Date;
 
@@ -20,7 +21,8 @@ public class MovimentacaoDto {
     @NonNull
     private String codProduto;
     @Enumerated(EnumType.STRING)
-    private com.api.estoque.entidades.enums.TipoMovimentacao TipoMovimentacao;
+    private TipoMovimentacao TipoMovimentacao;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @NonNull
     private Date dataMovimentacao;
     @NonNull

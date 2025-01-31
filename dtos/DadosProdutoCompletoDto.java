@@ -35,6 +35,7 @@ public class DadosProdutoCompletoDto {
         this.produto = produto.getProduto();
         this.qtdMinima = produto.getQtdMinima();
         this.estoque = produto.getEstoque();
+        this.dataCadastro = produto.getDataCadastro();
         this.valorCusto = produto.getValorCusto();
     }
 }

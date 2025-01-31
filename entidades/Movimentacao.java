@@ -27,9 +27,6 @@ public class Movimentacao {
     @NonNull
     private int quantidade;
 
-    // produto
-    // usuario
-
     /******************
      * RELACIONAMENTOS
      ******************/

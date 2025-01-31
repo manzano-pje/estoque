@@ -27,9 +27,7 @@ public class Produto {
     private Date dataCadastro;
     private double valorCusto;
 
-
-    public Produto(Produto produto) {
-    }
+    public Produto(Produto produto) {}
 
     /******************
      * RELACIONAMENTOS
@@ -37,5 +35,4 @@ public class Produto {
     
     @OneToMany(mappedBy = "produto")
     public List<Movimentacao> listaMovimentacao;
-
 }
