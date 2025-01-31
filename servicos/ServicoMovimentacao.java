@@ -76,6 +76,16 @@ public class ServicoMovimentacao {
         return ResponseEntity.status(HttpStatus.OK).body("Movimentação efetuada com sucesso.");
     }
 
+    public List<MovimentacaoDto> listartodasMovimentacoes(){
+        List<Movimentacao> listaMovimentacao = repositorioMovimentacao.findAll();
+        if(listaMovimentacao.isEmpty()){
+            throw new ExcessaoNaoExisteMovimentacaoNestaData();
+        }
+        return listaMovimentacao.stream()
+                .map(MovimentacaoDto::new)
+                .collect(Collectors.toList());
+    }
+
     public List<MovimentacaoDto> listarMovientacaoDataEspecifica(String data){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate dataFormatada = LocalDate.parse(data, formatter);

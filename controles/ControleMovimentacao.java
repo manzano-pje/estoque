@@ -28,6 +28,11 @@ public class ControleMovimentacao {
         return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
 
+    @GetMapping
+    public List<MovimentacaoDto> listartodasMovimentacoes(){
+        return servicoMovimentacao.listartodasMovimentacoes();
+    }
+
     @GetMapping("/data/{data}")
     public List<MovimentacaoDto> listarMovientacaoDataEspecifica(@PathVariable String data){
         return servicoMovimentacao.listarMovientacaoDataEspecifica(data);
