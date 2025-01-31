@@ -5,6 +5,7 @@ import com.api.estoque.entidades.Movimentacao;
 import com.api.estoque.entidades.Produto;
 import com.api.estoque.entidades.Usuario;
 import com.api.estoque.entidades.enums.TipoMovimentacao;
+import com.api.estoque.excessoes.ExcessaoNaoExisteMovimentacaoNestaData;
 import com.api.estoque.excessoes.ExcessaoNaoExisteUsuarios;
 import com.api.estoque.excessoes.ExcessaoProdutoNaoCadastrado;
 import com.api.estoque.excessoes.ExcessaoQuantidadeInsuficiente;
@@ -18,8 +19,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Data
@@ -46,7 +51,7 @@ public class ServicoMovimentacao {
 
         Movimentacao movimentacao = new Movimentacao();
         movimentacao.setTipoMovimentacao(movimentacaoDto.getTipoMovimentacao());
-        movimentacao.setDataMovimentacao(new Date());
+        movimentacao.setDataMovimentacao(LocalDate.now());
         movimentacao.setProduto(produto);
         movimentacao.setUsuario(usuario);
         movimentacao.setQuantidade(movimentacaoDto.getQuantidade());
@@ -70,4 +75,18 @@ public class ServicoMovimentacao {
         }
         return ResponseEntity.status(HttpStatus.OK).body("Movimentação efetuada com sucesso.");
     }
+
+    public List<MovimentacaoDto> listarMovientacaoDataEspecifica(String data){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate dataFormatada = LocalDate.parse(data, formatter);
+        List<Movimentacao> listaMovimentacao = repositorioMovimentacao.findByDataMovimentacao(dataFormatada);
+        if(listaMovimentacao.isEmpty()){
+            throw new ExcessaoNaoExisteMovimentacaoNestaData();
+        }
+        return listaMovimentacao.stream()
+                .map(MovimentacaoDto::new)
+                .collect(Collectors.toList());
+    }
+
+
 }
