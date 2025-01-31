@@ -26,10 +26,16 @@ public class ControleUsuario {
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso!");
     }
 
-    @PatchMapping("/{usuario}")
+    @PatchMapping("/senha/{usuario}")
     public ResponseEntity<Object> alterarSenha(@Valid @PathVariable String usuario, @RequestBody String senha){
         servicoUsuario.alterarSenha(usuario, senha);
         return ResponseEntity.status(HttpStatus.OK).body("Senha alterada com sucesso!");
+    }
+
+    @PatchMapping("/usuario/{usuario}")
+    public ResponseEntity<Object> alterarUsuario(@Valid @PathVariable String usuario, @RequestBody String usuarioNovo){
+        servicoUsuario.alterarUsuario(usuario, usuarioNovo);
+        return ResponseEntity.status(HttpStatus.OK).body("Usuário alterada com sucesso!");
     }
 
     @GetMapping
@@ -39,7 +45,7 @@ public class ControleUsuario {
 
     @DeleteMapping("/{usuario}")
     public ResponseEntity<Object> apagarUsuario(@PathVariable String usuario){
-        servicoUsuario.apagaqrUsuario(usuario);
+        servicoUsuario.apagarUsuario(usuario);
         return ResponseEntity.status(HttpStatus.OK).body("Usuário excluído com sucesso!");
     }
 }
