@@ -5,13 +5,12 @@ import com.api.estoque.servicos.ServicoMovimentacao;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -36,5 +35,12 @@ public class ControleMovimentacao {
     @GetMapping("/data/{data}")
     public List<MovimentacaoDto> listarMovientacaoDataEspecifica(@PathVariable String data){
         return servicoMovimentacao.listarMovientacaoDataEspecifica(data);
+    }
+
+    @GetMapping("periodo/")
+    public List<MovimentacaoDto> listarMovientacaoDataEspecifica(
+            @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dataInicio,
+            @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dataFinal){
+        return servicoMovimentacao.listarMovientacaoDataEspecifica(dataInicio, dataFinal);
     }
 }

@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -98,5 +97,15 @@ public class ServicoMovimentacao {
                 .collect(Collectors.toList());
     }
 
+    public List<MovimentacaoDto> listarMovientacaoDataEspecifica(LocalDate dataInicio, LocalDate dataFinal){
 
+        List<Movimentacao> listaMovimentacao = repositorioMovimentacao.findByDataMovimentacaoBetween(dataInicio, dataFinal);
+        if(listaMovimentacao.isEmpty()){
+            throw new ExcessaoNaoExisteMovimentacaoNestaData();
+        }
+        return listaMovimentacao.stream()
+                .map(MovimentacaoDto::new)
+                .collect(Collectors.toList());
+
+    }
 }
