@@ -54,18 +54,10 @@ public class ControleProduto {
         return ResponseEntity.status(HttpStatus.OK).body("Produto alterado com sucesso!");
     }
 
-    @PatchMapping("/estoque/{codProduto}")
-    public ResponseEntity<Object> atuaizarEstoque(@PathVariable String codProduto,
-                                                  @Valid @RequestBody AtualizarQuantidadeDto atualizarQuantidadeDto){
-        servicoProduto.atuaizarEstoque(codProduto, atualizarQuantidadeDto);
-        return ResponseEntity.status(HttpStatus.OK).body("EStoque atualizado com sucesso");
-    }
-
 
     @DeleteMapping("/{codProduto}")
     public ResponseEntity<Object> excluirProdutoPorCod(@PathVariable String codProduto){
         servicoProduto.excluirProdutoPorCod(codProduto);
         return ResponseEntity.status(HttpStatus.OK).body("Produto excluído com sucesso!");
     }
-
 }

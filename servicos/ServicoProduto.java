@@ -47,14 +47,6 @@ public class ServicoProduto {
         repositorioProduto.save(produto);
     }
 
-    public void atuaizarEstoque(String codProduto, AtualizarQuantidadeDto atualizarQuantidadeDto){
-       Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codProduto.toUpperCase());
-       Produto produto = new Produto();
-       produto = produtoOptional.get();
-       produto.setEstoque(produto.getEstoque() + atualizarQuantidadeDto.getQuantidade());
-       repositorioProduto.save(produto);
-    }
-
     public List<DadosProdutoCompletoDto> listarTodosProdutos(){
         List<Produto> listaDeProdutos = repositorioProduto.findAll();
         if (listaDeProdutos.isEmpty()){
