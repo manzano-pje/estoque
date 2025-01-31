@@ -21,14 +21,9 @@ public class ControleProduto {
 
     private  final ServicoProduto servicoProduto;
 
-    @PostMapping("/{codProduto}")
-    public ResponseEntity<?> verificarProduto(@PathVariable String codProduto){
-        return servicoProduto.verificarProduto(codProduto);
-    }
-
-    @PostMapping("/cadastrar/{codProduto}")
-    public ResponseEntity<Object> criarProduto(@PathVariable String codProduto, @RequestBody @Valid ProdutoDto produtoDto){
-        servicoProduto.criarProduto(codProduto, produtoDto);
+    @PostMapping
+    public ResponseEntity<Object> criarProduto(@RequestBody @Valid ProdutoDto produtoDto){
+        servicoProduto.criarProduto(produtoDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Produto criado com sucesso!");
     }
 

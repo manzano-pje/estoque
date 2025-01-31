@@ -1,18 +1,18 @@
 package com.api.estoque.servicos;
 
 import com.api.estoque.configuracoes.FormatarTexto;
-import com.api.estoque.dtos.AtualizarQuantidadeDto;
 import com.api.estoque.dtos.DadosProdutoCompletoDto;
 import com.api.estoque.dtos.ProdutoDto;
 import com.api.estoque.entidades.Produto;
 import com.api.estoque.excessoes.ExcessaoNaoExistemProdutosCadastrados;
+import com.api.estoque.excessoes.ExcessaoProdutoJaCadastrado;
 import com.api.estoque.repositorios.RepositorioProduto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,19 +25,13 @@ public class ServicoProduto {
     private final RepositorioProduto repositorioProduto;
     private final ModelMapper mapper;
 
-    public ResponseEntity<?> verificarProduto(String codigoProduto){
-        Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codigoProduto);
-        if(produtoOptional.isPresent()){
-            return ResponseEntity.ok(new AtualizarQuantidadeDto("Atualizar quantidade do produto. " + produtoOptional.get().getProduto(), 0));
-        }else{
-            DadosProdutoCompletoDto dadosProdutoCompletoDto = new DadosProdutoCompletoDto();
-            dadosProdutoCompletoDto.setCodProduto(codigoProduto);
-            return ResponseEntity.ok("Cadastrar novo produto" + dadosProdutoCompletoDto);
+    public ProdutoDto criarProduto( ProdutoDto produtoDto){
+        Optional<Produto> produtoOptional= repositorioProduto.findByCodProduto(produtoDto.getCodProduto());
+        if (produtoOptional.isPresent()){
+            throw new ExcessaoProdutoJaCadastrado();
         }
-    }
-
-    public ProdutoDto criarProduto(String codProduto, ProdutoDto ProdutoDto){
-        Produto produto = new Produto();
+        Produto produto = mapper.map(produtoDto, Produto.class);
+        produto.setDataCadastro(LocalDate.now());
         repositorioProduto.save(produto);
         return mapper.map(produto, ProdutoDto.class);
     }

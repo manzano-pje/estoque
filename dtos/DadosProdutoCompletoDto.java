@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -25,7 +26,7 @@ public class DadosProdutoCompletoDto {
     private int qtdMinima;
     @NonNull
     private int estoque;
-    private Date dataCadastro;
+    private LocalDate dataCadastro;
 
     @NonNull
     private double valorCusto;
