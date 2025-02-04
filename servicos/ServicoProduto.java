@@ -1,18 +1,20 @@
 package com.api.estoque.servicos;
 
 import com.api.estoque.configuracoes.FormatarTexto;
-import com.api.estoque.dtos.AtualizarQuantidadeDto;
+import com.api.estoque.dtos.AlteracaoProdutoDto;
 import com.api.estoque.dtos.DadosProdutoCompletoDto;
 import com.api.estoque.dtos.ProdutoDto;
 import com.api.estoque.entidades.Produto;
 import com.api.estoque.excessoes.ExcessaoNaoExistemProdutosCadastrados;
+import com.api.estoque.excessoes.ExcessaoProdutoJaCadastrado;
+import com.api.estoque.excessoes.ExcessaoProdutoNaoCadastrado;
 import com.api.estoque.repositorios.RepositorioProduto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,28 +27,30 @@ public class ServicoProduto {
     private final RepositorioProduto repositorioProduto;
     private final ModelMapper mapper;
 
-    public ResponseEntity<?> verificarProduto(String codigoProduto){
-        Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codigoProduto);
-        if(produtoOptional.isPresent()){
-            return ResponseEntity.ok(new AtualizarQuantidadeDto("Atualizar quantidade do produto. " + produtoOptional.get().getProduto(), 0));
-        }else{
-            DadosProdutoCompletoDto dadosProdutoCompletoDto = new DadosProdutoCompletoDto();
-            dadosProdutoCompletoDto.setCodProduto(codigoProduto);
-            return ResponseEntity.ok("Cadastrar novo produto" + dadosProdutoCompletoDto);
+    public ProdutoDto criarProduto( ProdutoDto produtoDto){
+        Optional<Produto> produtoOptional= repositorioProduto.findByCodProduto(produtoDto.getCodProduto());
+        if (produtoOptional.isPresent()){
+            throw new ExcessaoProdutoJaCadastrado();
         }
-    }
-
-    public ProdutoDto criarProduto(String codProduto, ProdutoDto ProdutoDto){
-        Produto produto = new Produto();
+        Produto produto = mapper.map(produtoDto, Produto.class);
+        produto.setDataCadastro(LocalDate.now());
         repositorioProduto.save(produto);
         return mapper.map(produto, ProdutoDto.class);
     }
-
-    public void alterarProdutoPorCodProduto(String codProduto, ProdutoDto produtoDto){
-        Produto produto = autalizarPrduto(codProduto, produtoDto);
+    public void alterarProdutoPorCodProduto(String codProduto, AlteracaoProdutoDto alteracaoProdutoDto){
+        Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codProduto);
+        if(produtoOptional.isEmpty()){
+            throw new ExcessaoProdutoNaoCadastrado();
+        }
+        Produto produto = produtoOptional.get();
+        produto.setIdProduto(produto.getIdProduto());
+        produto.setCodProduto(produto.getCodProduto());
+        produto.setProduto(FormatarTexto.formatarString(alteracaoProdutoDto.getProduto()));
+        produto.setQtdMinima(alteracaoProdutoDto.getQtdMinima());
+        produto.setEstoque(alteracaoProdutoDto.getEstoque());
+        produto.setValorCusto(alteracaoProdutoDto.getValorCusto());
         repositorioProduto.save(produto);
     }
-
     public List<DadosProdutoCompletoDto> listarTodosProdutos(){
         List<Produto> listaDeProdutos = repositorioProduto.findAll();
         if (listaDeProdutos.isEmpty()){
@@ -58,7 +62,6 @@ public class ServicoProduto {
                 .map(DadosProdutoCompletoDto::new)
                 .collect(Collectors.toList());
     }
-
     public DadosProdutoCompletoDto listaUmProdutoPorCodigo(String codProduto){
         Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codProduto.toUpperCase());
         if(produtoOptional.isEmpty()){
@@ -67,7 +70,6 @@ public class ServicoProduto {
         Produto produto = produtoOptional.get();
         return  mapper.map(produto, DadosProdutoCompletoDto.class);
     }
-
     public DadosProdutoCompletoDto listaUmProdutoPorNome(String nomeProduto){
         Optional<Produto> produtoOptional = repositorioProduto.findByProduto(nomeProduto.toUpperCase());
         if(produtoOptional.isEmpty()){
@@ -76,7 +78,6 @@ public class ServicoProduto {
         Produto produto = produtoOptional.get();
         return  mapper.map(produto, DadosProdutoCompletoDto.class);
     }
-
     public void excluirProdutoPorCod(String codProduto){
         Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codProduto.toUpperCase());
         if(produtoOptional.isEmpty()){
@@ -84,15 +85,4 @@ public class ServicoProduto {
         }
         repositorioProduto.deleteById(produtoOptional.get().getIdProduto());
     }
-
-    private Produto autalizarPrduto(String codProduto, ProdutoDto novoProdutoDto){
-        Produto produto = new Produto();
-        produto.setCodProduto(codProduto);
-        produto.setProduto(FormatarTexto.formatarString(novoProdutoDto.getProduto()));
-        produto.setQtdMinima(novoProdutoDto.getQtdMinima());
-        produto.setEstoque(novoProdutoDto.getEstoque());
-        produto.setValorCusto(novoProdutoDto.getValorCusto());
-        return produto;
-    }
-
 }

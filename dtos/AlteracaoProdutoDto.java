@@ -7,17 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import java.util.Date;
-
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProdutoDto {
+public class AlteracaoProdutoDto {
 
-    @NonNull
-    @Column(unique = true)
-    private String codProduto;
     @NonNull
     @Column(unique = true)
     private String produto;
@@ -28,8 +23,7 @@ public class ProdutoDto {
     @NonNull
     private double valorCusto;
 
-    public ProdutoDto(Produto produto) {
-        this.codProduto = produto.getCodProduto();
+    public AlteracaoProdutoDto(Produto produto) {
         this.produto = produto.getProduto();
         this.qtdMinima = produto.getQtdMinima();
         this.estoque = produto.getEstoque();
