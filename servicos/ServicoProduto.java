@@ -1,11 +1,13 @@
 package com.api.estoque.servicos;
 
 import com.api.estoque.configuracoes.FormatarTexto;
+import com.api.estoque.dtos.AlteracaoProdutoDto;
 import com.api.estoque.dtos.DadosProdutoCompletoDto;
 import com.api.estoque.dtos.ProdutoDto;
 import com.api.estoque.entidades.Produto;
 import com.api.estoque.excessoes.ExcessaoNaoExistemProdutosCadastrados;
 import com.api.estoque.excessoes.ExcessaoProdutoJaCadastrado;
+import com.api.estoque.excessoes.ExcessaoProdutoNaoCadastrado;
 import com.api.estoque.repositorios.RepositorioProduto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,12 +37,20 @@ public class ServicoProduto {
         repositorioProduto.save(produto);
         return mapper.map(produto, ProdutoDto.class);
     }
-
-    public void alterarProdutoPorCodProduto(String codProduto, ProdutoDto produtoDto){
-        Produto produto = autalizarPrduto(codProduto, produtoDto);
+    public void alterarProdutoPorCodProduto(String codProduto, AlteracaoProdutoDto alteracaoProdutoDto){
+        Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codProduto);
+        if(produtoOptional.isEmpty()){
+            throw new ExcessaoProdutoNaoCadastrado();
+        }
+        Produto produto = produtoOptional.get();
+        produto.setIdProduto(produto.getIdProduto());
+        produto.setCodProduto(produto.getCodProduto());
+        produto.setProduto(FormatarTexto.formatarString(alteracaoProdutoDto.getProduto()));
+        produto.setQtdMinima(alteracaoProdutoDto.getQtdMinima());
+        produto.setEstoque(alteracaoProdutoDto.getEstoque());
+        produto.setValorCusto(alteracaoProdutoDto.getValorCusto());
         repositorioProduto.save(produto);
     }
-
     public List<DadosProdutoCompletoDto> listarTodosProdutos(){
         List<Produto> listaDeProdutos = repositorioProduto.findAll();
         if (listaDeProdutos.isEmpty()){
@@ -52,7 +62,6 @@ public class ServicoProduto {
                 .map(DadosProdutoCompletoDto::new)
                 .collect(Collectors.toList());
     }
-
     public DadosProdutoCompletoDto listaUmProdutoPorCodigo(String codProduto){
         Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codProduto.toUpperCase());
         if(produtoOptional.isEmpty()){
@@ -61,7 +70,6 @@ public class ServicoProduto {
         Produto produto = produtoOptional.get();
         return  mapper.map(produto, DadosProdutoCompletoDto.class);
     }
-
     public DadosProdutoCompletoDto listaUmProdutoPorNome(String nomeProduto){
         Optional<Produto> produtoOptional = repositorioProduto.findByProduto(nomeProduto.toUpperCase());
         if(produtoOptional.isEmpty()){
@@ -70,7 +78,6 @@ public class ServicoProduto {
         Produto produto = produtoOptional.get();
         return  mapper.map(produto, DadosProdutoCompletoDto.class);
     }
-
     public void excluirProdutoPorCod(String codProduto){
         Optional<Produto> produtoOptional = repositorioProduto.findByCodProduto(codProduto.toUpperCase());
         if(produtoOptional.isEmpty()){
@@ -78,15 +85,4 @@ public class ServicoProduto {
         }
         repositorioProduto.deleteById(produtoOptional.get().getIdProduto());
     }
-
-    private Produto autalizarPrduto(String codProduto, ProdutoDto novoProdutoDto){
-        Produto produto = new Produto();
-        produto.setCodProduto(codProduto);
-        produto.setProduto(FormatarTexto.formatarString(novoProdutoDto.getProduto()));
-        produto.setQtdMinima(novoProdutoDto.getQtdMinima());
-        produto.setEstoque(novoProdutoDto.getEstoque());
-        produto.setValorCusto(novoProdutoDto.getValorCusto());
-        return produto;
-    }
-
 }

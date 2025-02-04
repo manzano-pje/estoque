@@ -1,14 +1,12 @@
 package com.api.estoque.servicos;
 
+import com.api.estoque.dtos.DadosProdutoCompletoDto;
 import com.api.estoque.dtos.MovimentacaoDto;
 import com.api.estoque.entidades.Movimentacao;
 import com.api.estoque.entidades.Produto;
 import com.api.estoque.entidades.Usuario;
 import com.api.estoque.entidades.enums.TipoMovimentacao;
-import com.api.estoque.excessoes.ExcessaoNaoExisteMovimentacaoNestaData;
-import com.api.estoque.excessoes.ExcessaoNaoExisteUsuarios;
-import com.api.estoque.excessoes.ExcessaoProdutoNaoCadastrado;
-import com.api.estoque.excessoes.ExcessaoQuantidadeInsuficiente;
+import com.api.estoque.excessoes.*;
 import com.api.estoque.repositorios.RepositorioMovimentacao;
 import com.api.estoque.repositorios.RepositorioProduto;
 import com.api.estoque.repositorios.RepositorioUsuario;
@@ -85,7 +83,7 @@ public class ServicoMovimentacao {
                 .collect(Collectors.toList());
     }
 
-    public List<MovimentacaoDto> listarMovientacaoDataEspecifica(String data){
+    public List<MovimentacaoDto> listarMovimentacaoDataEspecifica(String data){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate dataFormatada = LocalDate.parse(data, formatter);
         List<Movimentacao> listaMovimentacao = repositorioMovimentacao.findByDataMovimentacao(dataFormatada);
@@ -97,7 +95,7 @@ public class ServicoMovimentacao {
                 .collect(Collectors.toList());
     }
 
-    public List<MovimentacaoDto> listarMovientacaoDataEspecifica(LocalDate dataInicio, LocalDate dataFinal){
+    public List<MovimentacaoDto> listarMovientacaoPeriodo(LocalDate dataInicio, LocalDate dataFinal){
 
         List<Movimentacao> listaMovimentacao = repositorioMovimentacao.findByDataMovimentacaoBetween(dataInicio, dataFinal);
         if(listaMovimentacao.isEmpty()){

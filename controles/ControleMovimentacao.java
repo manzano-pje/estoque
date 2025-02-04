@@ -34,13 +34,13 @@ public class ControleMovimentacao {
 
     @GetMapping("/data/{data}")
     public List<MovimentacaoDto> listarMovientacaoDataEspecifica(@PathVariable String data){
-        return servicoMovimentacao.listarMovientacaoDataEspecifica(data);
+        return servicoMovimentacao.listarMovimentacaoDataEspecifica(data);
     }
 
     @GetMapping("periodo/")
-    public List<MovimentacaoDto> listarMovientacaoDataEspecifica(
+    public List<MovimentacaoDto> listarMovientacaoPeriodo(
             @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dataInicio,
             @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dataFinal){
-        return servicoMovimentacao.listarMovientacaoDataEspecifica(dataInicio, dataFinal);
+        return servicoMovimentacao.listarMovientacaoPeriodo(dataInicio, dataFinal);
     }
 }

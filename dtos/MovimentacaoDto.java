@@ -36,6 +36,4 @@ public class MovimentacaoDto {
         this.quantidade = movimentacao.getQuantidade();
         this.TipoMovimentacao = movimentacao.getTipoMovimentacao();
     }
-
-
 }
