@@ -1,4 +1,4 @@
-📦 Sistema de Controle de Estoque
+## 📦 Sistema de Controle de Estoque  
 Este projeto é uma API REST desenvolvida para gerenciar o cadastro de produtos e usuários, além de realizar o controle de estoque com regras de movimentação de itens.
 
 ✨ Funcionalidades  
