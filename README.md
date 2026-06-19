@@ -80,9 +80,8 @@ O sistema foi estruturado para garantir a separação de responsabilidades (*Sep
 1. Clone o repositório:
    ```bash
    git clone [https://github.com/manzano-pje/estoque.git](https://github.com/manzano-pje/estoque.git)
-Configure o seu MySQL e atualize o application.properties.
-
-Execute o projeto via Maven:
+2. Configure o seu MySQL e atualize o application.properties.
+3. Execute o projeto via Maven:
 
 Bash
 ./mvnw spring-boot:run
